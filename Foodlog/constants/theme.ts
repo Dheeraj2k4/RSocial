@@ -5,27 +5,78 @@
 
 import { Platform } from 'react-native';
 
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
+/**
+ * Foodlog brand palette. Use these tokens instead of raw hex values.
+ * Direction: ~90% neutral surfaces, ~10% olive as the primary brand/action color.
+ * Terracotta is a micro-accent (likes, ratings, badges, attention states).
+ */
+export const Palette = {
+  olive: '#59634A', // primary brand / actions
+  offWhite: '#F5F3EC', // app background
+  sand: '#D5C7A3', // secondary neutral / borders
+  ink: '#20231D', // primary text
+  terracotta: '#C96B45', // accent (sparing)
+  white: '#FFFFFF',
+  black: '#000000',
+
+  // Supporting neutrals derived from the core palette
+  inkMuted: '#5B5E54', // secondary text
+  sandMuted: '#E8E3D6', // subtle fills / dividers
+  overlay: 'rgba(20, 22, 17, 0.45)', // scrim over photography
+} as const;
+
+const tintColorLight = Palette.olive;
+const tintColorDark = Palette.offWhite;
 
 export const Colors = {
   light: {
-    text: '#11181C',
-    background: '#fff',
+    text: Palette.ink,
+    textSecondary: Palette.inkMuted,
+    background: Palette.offWhite,
+    surface: Palette.white,
     tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
+    primary: Palette.olive,
+    secondary: Palette.sand,
+    accent: Palette.terracotta,
+    border: Palette.sandMuted,
+    icon: Palette.inkMuted,
+    tabIconDefault: Palette.inkMuted,
     tabIconSelected: tintColorLight,
   },
   dark: {
-    text: '#ECEDEE',
-    background: '#151718',
+    text: '#ECEBE3',
+    textSecondary: '#A9AC9E',
+    background: '#161811',
+    surface: '#20231D',
     tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
+    primary: '#8A9673',
+    secondary: '#3A3D31',
+    accent: Palette.terracotta,
+    border: '#2C2F26',
+    icon: '#A9AC9E',
+    tabIconDefault: '#A9AC9E',
     tabIconSelected: tintColorDark,
   },
 };
+
+/** Spacing scale (4pt base) for consistent layout rhythm. */
+export const Spacing = {
+  xs: 4,
+  sm: 8,
+  md: 12,
+  lg: 16,
+  xl: 24,
+  xxl: 32,
+  xxxl: 48,
+} as const;
+
+/** Corner radius tokens. Rounded but restrained. */
+export const Radius = {
+  sm: 8,
+  md: 12,
+  lg: 20,
+  pill: 999,
+} as const;
 
 export const Fonts = Platform.select({
   ios: {

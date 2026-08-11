@@ -184,6 +184,6 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.lg,
   },
   recent: {
-    paddingBottom: Spacing.xxxl,
+    paddingBottom: 120,
   },
 });

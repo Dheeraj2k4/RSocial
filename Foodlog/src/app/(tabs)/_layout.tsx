@@ -1,12 +1,14 @@
-import { Ionicons } from '@expo/vector-icons';
 import { Tabs, useRouter } from 'expo-router';
+import { Heart, House, MagnifyingGlass, Plus, User } from 'phosphor-react-native';
 import { StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { HapticTab } from '@/components/haptic-tab';
-import { Palette, Radius } from '@/constants/theme';
+import { FontFamily, Palette } from '@/constants/theme';
 
 export default function TabsLayout() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
 
   return (
     <Tabs
@@ -15,16 +17,16 @@ export default function TabsLayout() {
         tabBarButton: HapticTab,
         tabBarActiveTintColor: Palette.terracotta,
         tabBarInactiveTintColor: Palette.inkMuted,
-        tabBarStyle: styles.tabBar,
         tabBarLabelStyle: styles.tabLabel,
         tabBarItemStyle: styles.tabItem,
+        tabBarStyle: [styles.tabBar, { bottom: Math.max(insets.bottom, 16) }],
       }}>
       <Tabs.Screen
         name="home"
         options={{
           title: 'Home',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'home' : 'home-outline'} size={24} color={color} />
+            <House size={24} color={color} weight={focused ? 'fill' : 'regular'} />
           ),
         }}
       />
@@ -33,7 +35,7 @@ export default function TabsLayout() {
         options={{
           title: 'Search',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'search' : 'search-outline'} size={24} color={color} />
+            <MagnifyingGlass size={24} color={color} weight={focused ? 'fill' : 'regular'} />
           ),
         }}
       />
@@ -42,8 +44,8 @@ export default function TabsLayout() {
         options={{
           title: '',
           tabBarIcon: () => (
-            <View style={styles.createButton}>
-              <Ionicons name="add" size={26} color={Palette.ink} />
+            <View style={styles.fab}>
+              <Plus size={26} color={Palette.white} weight="bold" />
             </View>
           ),
         }}
@@ -60,7 +62,7 @@ export default function TabsLayout() {
         options={{
           title: 'Activity',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'heart' : 'heart-outline'} size={24} color={color} />
+            <Heart size={24} color={color} weight={focused ? 'fill' : 'regular'} />
           ),
         }}
       />
@@ -69,7 +71,7 @@ export default function TabsLayout() {
         options={{
           title: 'Profile',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'person' : 'person-outline'} size={24} color={color} />
+            <User size={24} color={color} weight={focused ? 'fill' : 'regular'} />
           ),
         }}
       />
@@ -79,24 +81,42 @@ export default function TabsLayout() {
 
 const styles = StyleSheet.create({
   tabBar: {
-    backgroundColor: Palette.offWhite,
-    borderTopColor: Palette.sandMuted,
-    borderTopWidth: StyleSheet.hairlineWidth,
-  },
-  tabLabel: {
-    fontSize: 11,
-    fontWeight: '600',
+    position: 'absolute',
+    left: 16,
+    right: 16,
+    height: 64,
+    borderRadius: 32,
+    paddingHorizontal: 12,
+    backgroundColor: Palette.white,
+    borderTopWidth: 0,
+    // Soft floating shadow
+    shadowColor: Palette.black,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.12,
+    shadowRadius: 16,
+    elevation: 12,
   },
   tabItem: {
-    paddingTop: 6,
+    height: 64,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  createButton: {
-    width: 44,
-    height: 44,
-    borderRadius: Radius.pill,
-    borderWidth: 2,
-    borderColor: Palette.inkMuted,
+  tabLabel: {
+    fontFamily: FontFamily.medium,
+    fontSize: 11,
+  },
+  fab: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    backgroundColor: Palette.terracotta,
     alignItems: 'center',
     justifyContent: 'center',
+    transform: [{ translateY: -12 }],
+    shadowColor: Palette.terracotta,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.35,
+    shadowRadius: 10,
+    elevation: 8,
   },
 });

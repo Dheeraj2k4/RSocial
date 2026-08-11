@@ -8,7 +8,6 @@ import {
   StyleSheet,
   Text,
   View,
-  useWindowDimensions,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -20,7 +19,6 @@ const HERO_IMAGE = require('@/assets/images/visily-image.png');
 export default function WelcomeScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { height } = useWindowDimensions();
 
   const handleGetStarted = () => router.replace('/(tabs)/home');
   const handleLogin = () => router.replace('/(tabs)/home');

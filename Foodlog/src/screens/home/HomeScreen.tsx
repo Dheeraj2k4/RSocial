@@ -65,7 +65,7 @@ export default function HomeScreen() {
         <IconButton icon={Bell} accessibilityLabel="Notifications" badge />
       </View>
 
-      <View style={CommonStyles.screenPadded}>
+      <View style={[CommonStyles.screenPadded, styles.searchRow]}>
         <SearchBar
           placeholder="Search dishes, cafes, or chefs..."
           trailing={<IconButton icon={Funnel} accessibilityLabel="Filters" size={20} color={colors.mutedText} />}
@@ -168,6 +168,9 @@ const createStyles = (colors: ThemeColors) =>
       fontFamily: FontFamily.semiBold,
       fontSize: 20,
       color: colors.text,
+    },
+    searchRow: {
+      marginTop: Spacing.lg,
     },
     chips: {
       paddingHorizontal: Spacing.xl,

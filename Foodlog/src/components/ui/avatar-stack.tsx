@@ -1,7 +1,8 @@
 import { Image } from 'expo-image';
 import { StyleSheet, View } from 'react-native';
 
-import { Palette } from '@/constants/theme';
+import { type ThemeColors } from '@/constants/theme';
+import { useThemedStyles } from '@/theme/use-themed-styles';
 
 type AvatarStackProps = {
   sources: string[];
@@ -11,6 +12,7 @@ type AvatarStackProps = {
 
 /** Overlapping avatars, e.g. "liked by …" or "friends who visited". */
 export function AvatarStack({ sources, size = 20, max = 3 }: AvatarStackProps) {
+  const { styles } = useThemedStyles(createStyles);
   const shown = sources.slice(0, max);
 
   return (
@@ -35,14 +37,15 @@ export function AvatarStack({ sources, size = 20, max = 3 }: AvatarStackProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  avatar: {
-    borderWidth: 1.5,
-    borderColor: Palette.offWhite,
-    backgroundColor: Palette.sandMuted,
-  },
-});
+const createStyles = (colors: ThemeColors) =>
+  StyleSheet.create({
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    avatar: {
+      borderWidth: 1.5,
+      borderColor: colors.background,
+      backgroundColor: colors.border,
+    },
+  });

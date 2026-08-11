@@ -1,7 +1,8 @@
 import { Image } from 'expo-image';
 import { StyleSheet, View } from 'react-native';
 
-import { Palette, Radius } from '@/constants/theme';
+import { Radius, type ThemeColors } from '@/constants/theme';
+import { useThemedStyles } from '@/theme/use-themed-styles';
 
 type AvatarProps = {
   source: string;
@@ -11,6 +12,7 @@ type AvatarProps = {
 
 /** Circular user image with an optional presence dot. */
 export function Avatar({ source, size = 44, online = false }: AvatarProps) {
+  const { styles } = useThemedStyles(createStyles);
   return (
     <View style={{ width: size, height: size }}>
       <Image
@@ -23,19 +25,20 @@ export function Avatar({ source, size = 44, online = false }: AvatarProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  image: {
-    backgroundColor: Palette.sandMuted,
-  },
-  status: {
-    position: 'absolute',
-    right: 0,
-    bottom: 0,
-    width: 12,
-    height: 12,
-    borderRadius: Radius.pill,
-    backgroundColor: '#43B581', // presence indicator
-    borderWidth: 2,
-    borderColor: Palette.offWhite,
-  },
-});
+const createStyles = (colors: ThemeColors) =>
+  StyleSheet.create({
+    image: {
+      backgroundColor: colors.border,
+    },
+    status: {
+      position: 'absolute',
+      right: 0,
+      bottom: 0,
+      width: 12,
+      height: 12,
+      borderRadius: Radius.pill,
+      backgroundColor: '#43B581', // presence indicator
+      borderWidth: 2,
+      borderColor: colors.background,
+    },
+  });

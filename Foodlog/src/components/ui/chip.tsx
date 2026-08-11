@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text } from 'react-native';
 
-import { FontFamily, Palette, Radius, Spacing } from '@/constants/theme';
+import { FontFamily, Radius, Spacing, type ThemeColors } from '@/constants/theme';
+import { useThemedStyles } from '@/theme/use-themed-styles';
 
 type ChipProps = {
   label: string;
@@ -10,6 +11,7 @@ type ChipProps = {
 
 /** Pill filter chip. Active = terracotta fill; inactive = neutral outline. */
 export function Chip({ label, active = false, onPress }: ChipProps) {
+  const { styles } = useThemedStyles(createStyles);
   return (
     <Pressable
       onPress={onPress}
@@ -20,30 +22,31 @@ export function Chip({ label, active = false, onPress }: ChipProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  base: {
-    height: 40,
-    paddingHorizontal: Spacing.lg,
-    borderRadius: Radius.pill,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  active: {
-    backgroundColor: Palette.terracotta,
-  },
-  inactive: {
-    backgroundColor: 'transparent',
-    borderWidth: 1,
-    borderColor: Palette.sand,
-  },
-  label: {
-    fontFamily: FontFamily.medium,
-    fontSize: 14,
-  },
-  labelActive: {
-    color: Palette.white,
-  },
-  labelInactive: {
-    color: Palette.ink,
-  },
-});
+const createStyles = (colors: ThemeColors) =>
+  StyleSheet.create({
+    base: {
+      height: 40,
+      paddingHorizontal: Spacing.lg,
+      borderRadius: Radius.pill,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    active: {
+      backgroundColor: colors.accent,
+    },
+    inactive: {
+      backgroundColor: 'transparent',
+      borderWidth: 1,
+      borderColor: colors.secondary,
+    },
+    label: {
+      fontFamily: FontFamily.medium,
+      fontSize: 14,
+    },
+    labelActive: {
+      color: colors.white,
+    },
+    labelInactive: {
+      color: colors.text,
+    },
+  });

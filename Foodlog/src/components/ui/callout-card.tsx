@@ -1,7 +1,8 @@
 import { ArrowRight } from 'phosphor-react-native';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { CommonStyles, FontFamily, Palette, Radius, Spacing } from '@/constants/theme';
+import { CommonStyles, FontFamily, Radius, Spacing, type ThemeColors } from '@/constants/theme';
+import { useThemedStyles } from '@/theme/use-themed-styles';
 
 type CalloutCardProps = {
   title: string;
@@ -12,6 +13,7 @@ type CalloutCardProps = {
 
 /** Centered promo card with a single call-to-action. */
 export function CalloutCard({ title, subtitle, buttonLabel, onPress }: CalloutCardProps) {
+  const { styles, colors } = useThemedStyles(createStyles);
   return (
     <View style={styles.card}>
       <Text style={styles.title}>{title}</Text>
@@ -21,47 +23,48 @@ export function CalloutCard({ title, subtitle, buttonLabel, onPress }: CalloutCa
         accessibilityRole="button"
         style={({ pressed }) => [CommonStyles.row, styles.button, pressed && styles.pressed]}>
         <Text style={styles.buttonText}>{buttonLabel}</Text>
-        <ArrowRight size={16} color={Palette.white} />
+        <ArrowRight size={16} color={colors.white} />
       </Pressable>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: Palette.sandMuted,
-    borderRadius: Radius.lg,
-    padding: Spacing.xl,
-    alignItems: 'center',
-    gap: Spacing.sm,
-  },
-  title: {
-    fontFamily: FontFamily.display,
-    fontSize: 20,
-    color: Palette.ink,
-  },
-  subtitle: {
-    fontFamily: FontFamily.body,
-    fontSize: 14,
-    lineHeight: 20,
-    color: Palette.inkMuted,
-    textAlign: 'center',
-  },
-  button: {
-    justifyContent: 'center',
-    gap: Spacing.sm,
-    marginTop: Spacing.sm,
-    paddingHorizontal: 24,
-    paddingVertical: 14,
-    borderRadius: Radius.pill,
-    backgroundColor: Palette.terracotta,
-  },
-  buttonText: {
-    fontFamily: FontFamily.semiBold,
-    fontSize: 15,
-    color: Palette.white,
-  },
-  pressed: {
-    opacity: 0.9,
-  },
-});
+const createStyles = (colors: ThemeColors) =>
+  StyleSheet.create({
+    card: {
+      backgroundColor: colors.border,
+      borderRadius: Radius.lg,
+      padding: Spacing.xl,
+      alignItems: 'center',
+      gap: Spacing.sm,
+    },
+    title: {
+      fontFamily: FontFamily.display,
+      fontSize: 20,
+      color: colors.text,
+    },
+    subtitle: {
+      fontFamily: FontFamily.body,
+      fontSize: 14,
+      lineHeight: 20,
+      color: colors.mutedText,
+      textAlign: 'center',
+    },
+    button: {
+      justifyContent: 'center',
+      gap: Spacing.sm,
+      marginTop: Spacing.sm,
+      paddingHorizontal: 24,
+      paddingVertical: 14,
+      borderRadius: Radius.pill,
+      backgroundColor: colors.accent,
+    },
+    buttonText: {
+      fontFamily: FontFamily.semiBold,
+      fontSize: 15,
+      color: colors.white,
+    },
+    pressed: {
+      opacity: 0.9,
+    },
+  });

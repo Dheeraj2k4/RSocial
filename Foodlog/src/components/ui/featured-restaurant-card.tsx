@@ -2,7 +2,8 @@ import { Image } from 'expo-image';
 import { Clock, MapPin } from 'phosphor-react-native';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { FontFamily, Palette, Radius, Spacing } from '@/constants/theme';
+import { FontFamily, Radius, Spacing, type ThemeColors } from '@/constants/theme';
+import { useThemedStyles } from '@/theme/use-themed-styles';
 import { RatingBadge } from './rating-badge';
 
 type FeaturedRestaurantCardProps = {
@@ -25,6 +26,7 @@ export function FeaturedRestaurantCard({
   rating,
   onPress,
 }: FeaturedRestaurantCardProps) {
+  const { styles, colors } = useThemedStyles(createStyles);
   return (
     <Pressable onPress={onPress} accessibilityRole="button" style={styles.card}>
       <View>
@@ -38,11 +40,11 @@ export function FeaturedRestaurantCard({
         <Text style={styles.name}>{name}</Text>
         <View style={styles.meta}>
           <View style={styles.metaItem}>
-            <MapPin size={14} color={Palette.inkMuted} />
+            <MapPin size={14} color={colors.mutedText} />
             <Text style={styles.metaText}>{distance}</Text>
           </View>
           <View style={styles.metaItem}>
-            <Clock size={14} color={Palette.inkMuted} />
+            <Clock size={14} color={colors.mutedText} />
             <Text style={styles.metaText}>{time}</Text>
           </View>
           <Text style={styles.cuisine}>{cuisine}</Text>
@@ -52,49 +54,50 @@ export function FeaturedRestaurantCard({
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    borderRadius: Radius.lg,
-    overflow: 'hidden',
-    backgroundColor: Palette.sandMuted,
-  },
-  image: {
-    width: '100%',
-    height: 180,
-    backgroundColor: Palette.sandMuted,
-  },
-  rating: {
-    position: 'absolute',
-    top: Spacing.md,
-    right: Spacing.md,
-  },
-  info: {
-    padding: Spacing.lg,
-  },
-  name: {
-    fontFamily: FontFamily.display,
-    fontSize: 20,
-    color: Palette.ink,
-    marginBottom: Spacing.sm,
-  },
-  meta: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: Spacing.lg,
-  },
-  metaItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  metaText: {
-    fontFamily: FontFamily.body,
-    fontSize: 13,
-    color: Palette.inkMuted,
-  },
-  cuisine: {
-    fontFamily: FontFamily.semiBold,
-    fontSize: 13,
-    color: Palette.ink,
-  },
-});
+const createStyles = (colors: ThemeColors) =>
+  StyleSheet.create({
+    card: {
+      borderRadius: Radius.lg,
+      overflow: 'hidden',
+      backgroundColor: colors.border,
+    },
+    image: {
+      width: '100%',
+      height: 180,
+      backgroundColor: colors.border,
+    },
+    rating: {
+      position: 'absolute',
+      top: Spacing.md,
+      right: Spacing.md,
+    },
+    info: {
+      padding: Spacing.lg,
+    },
+    name: {
+      fontFamily: FontFamily.display,
+      fontSize: 20,
+      color: colors.text,
+      marginBottom: Spacing.sm,
+    },
+    meta: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: Spacing.lg,
+    },
+    metaItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
+    },
+    metaText: {
+      fontFamily: FontFamily.body,
+      fontSize: 13,
+      color: colors.mutedText,
+    },
+    cuisine: {
+      fontFamily: FontFamily.semiBold,
+      fontSize: 13,
+      color: colors.text,
+    },
+  });

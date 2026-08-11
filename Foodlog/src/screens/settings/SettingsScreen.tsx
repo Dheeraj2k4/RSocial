@@ -75,12 +75,6 @@ export default function SettingsScreen() {
 
           <SettingsSection title="ACCOUNT">
             <SettingsRow icon={User} label="Personal Information" onPress={() => {}} />
-            <SettingsRow
-              icon={CreditCard}
-              label="Foodlog Pro Subscription"
-              right={<Badge label="Active" variant="soft" />}
-              onPress={() => {}}
-            />
             <SettingsRow icon={Globe} label="Language" value="English (US)" onPress={() => {}} />
           </SettingsSection>
 
@@ -91,13 +85,6 @@ export default function SettingsScreen() {
               showChevron={false}
               right={renderSwitch(pushNotifications, setPushNotifications)}
             />
-            <SettingsRow
-              icon={EnvelopeSimple}
-              label="Email Newsletter"
-              showChevron={false}
-              right={renderSwitch(emailNewsletter, setEmailNewsletter)}
-            />
-            <SettingsRow icon={DeviceMobile} label="SMS Alerts" onPress={() => {}} />
           </SettingsSection>
 
           <SettingsSection title="PRIVACY">
@@ -127,8 +114,7 @@ export default function SettingsScreen() {
           </Pressable>
 
           <View style={styles.footer}>
-            <Text style={[styles.footerText, { color: colors.mutedText }]}>FOODLOG VERSION 2.4.0 (1202)</Text>
-            <Text style={[styles.footerText, { color: colors.mutedText }]}>MADE WITH LOVE IN NYC</Text>
+            <Text style={[styles.footerText, { color: colors.mutedText }]}>FOODLOG VERSION 1.0 (1202)</Text>
           </View>
         </ScrollView>
       </SafeAreaView>

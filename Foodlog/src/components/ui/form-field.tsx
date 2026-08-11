@@ -1,7 +1,8 @@
 import { type ReactNode } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { FontFamily, Palette, Spacing } from '@/constants/theme';
+import { FontFamily, Spacing, type ThemeColors } from '@/constants/theme';
+import { useThemedStyles } from '@/theme/use-themed-styles';
 
 type FormFieldProps = {
   label: string;
@@ -15,6 +16,7 @@ type FormFieldProps = {
  * Used throughout data-entry screens for consistent field grouping.
  */
 export function FormField({ label, badge, children }: FormFieldProps) {
+  const { styles } = useThemedStyles(createStyles);
   return (
     <View style={styles.container}>
       <View style={styles.labelRow}>
@@ -26,25 +28,26 @@ export function FormField({ label, badge, children }: FormFieldProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    gap: Spacing.sm,
-  },
-  labelRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  label: {
-    fontFamily: FontFamily.semiBold,
-    fontSize: 12,
-    letterSpacing: 0.8,
-    color: Palette.inkMuted,
-    textTransform: 'uppercase',
-  },
-  badge: {
-    fontFamily: FontFamily.medium,
-    fontSize: 12,
-    color: Palette.terracotta,
-  },
-});
+const createStyles = (colors: ThemeColors) =>
+  StyleSheet.create({
+    container: {
+      gap: Spacing.sm,
+    },
+    labelRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    label: {
+      fontFamily: FontFamily.semiBold,
+      fontSize: 12,
+      letterSpacing: 0.8,
+      color: colors.mutedText,
+      textTransform: 'uppercase',
+    },
+    badge: {
+      fontFamily: FontFamily.medium,
+      fontSize: 12,
+      color: colors.accent,
+    },
+  });

@@ -2,7 +2,8 @@ import { Image } from 'expo-image';
 import { CaretRight, Clock, MapPin } from 'phosphor-react-native';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { CommonStyles, FontFamily, Palette, Radius, Spacing } from '@/constants/theme';
+import { CommonStyles, FontFamily, Radius, Spacing, type ThemeColors } from '@/constants/theme';
+import { useThemedStyles } from '@/theme/use-themed-styles';
 import { RatingBadge } from './rating-badge';
 import { Tag, type TagTone } from './tag';
 
@@ -28,6 +29,7 @@ export function RestaurantListCard({
   tags = [],
   onPress,
 }: RestaurantListCardProps) {
+  const { styles, colors } = useThemedStyles(createStyles);
   return (
     <Pressable onPress={onPress} accessibilityRole="button" style={styles.card}>
       <View style={styles.imageWrap}>
@@ -50,16 +52,16 @@ export function RestaurantListCard({
 
         <View style={[CommonStyles.row, styles.meta]}>
           <View style={[CommonStyles.row, styles.metaItem]}>
-            <MapPin size={14} color={Palette.inkMuted} />
+            <MapPin size={14} color={colors.mutedText} />
             <Text style={styles.metaText}>{distance}</Text>
           </View>
           <View style={[CommonStyles.row, styles.metaItem]}>
-            <Clock size={14} color={Palette.inkMuted} />
+            <Clock size={14} color={colors.mutedText} />
             <Text style={styles.metaText}>{time}</Text>
           </View>
           <View style={[CommonStyles.row, styles.details]}>
             <Text style={styles.detailsText}>View Details</Text>
-            <CaretRight size={14} color={Palette.terracotta} />
+            <CaretRight size={14} color={colors.accent} />
           </View>
         </View>
       </View>
@@ -67,62 +69,63 @@ export function RestaurantListCard({
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    borderRadius: Radius.lg,
-    overflow: 'hidden',
-    backgroundColor: Palette.white,
-    borderWidth: 1,
-    borderColor: Palette.sandMuted,
-  },
-  imageWrap: {
-    height: 180,
-    width: '100%',
-  },
-  image: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: Palette.sandMuted,
-  },
-  tags: {
-    position: 'absolute',
-    top: Spacing.md,
-    left: Spacing.md,
-    flexDirection: 'row',
-    gap: 6,
-  },
-  body: {
-    padding: Spacing.lg,
-    gap: 4,
-  },
-  name: {
-    fontFamily: FontFamily.semiBold,
-    fontSize: 18,
-    color: Palette.ink,
-  },
-  cuisine: {
-    fontFamily: FontFamily.body,
-    fontSize: 14,
-    color: Palette.inkMuted,
-  },
-  meta: {
-    gap: Spacing.md,
-    marginTop: Spacing.sm,
-  },
-  metaItem: {
-    gap: 4,
-  },
-  metaText: {
-    fontFamily: FontFamily.body,
-    fontSize: 13,
-    color: Palette.inkMuted,
-  },
-  details: {
-    marginLeft: 'auto',
-    gap: 2,
-  },
-  detailsText: {
-    fontFamily: FontFamily.medium,
-    fontSize: 13,
-    color: Palette.terracotta,
-  },
-});
+const createStyles = (colors: ThemeColors) =>
+  StyleSheet.create({
+    card: {
+      borderRadius: Radius.lg,
+      overflow: 'hidden',
+      backgroundColor: colors.surface,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    imageWrap: {
+      height: 180,
+      width: '100%',
+    },
+    image: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: colors.border,
+    },
+    tags: {
+      position: 'absolute',
+      top: Spacing.md,
+      left: Spacing.md,
+      flexDirection: 'row',
+      gap: 6,
+    },
+    body: {
+      padding: Spacing.lg,
+      gap: 4,
+    },
+    name: {
+      fontFamily: FontFamily.semiBold,
+      fontSize: 18,
+      color: colors.text,
+    },
+    cuisine: {
+      fontFamily: FontFamily.body,
+      fontSize: 14,
+      color: colors.mutedText,
+    },
+    meta: {
+      gap: Spacing.md,
+      marginTop: Spacing.sm,
+    },
+    metaItem: {
+      gap: 4,
+    },
+    metaText: {
+      fontFamily: FontFamily.body,
+      fontSize: 13,
+      color: colors.mutedText,
+    },
+    details: {
+      marginLeft: 'auto',
+      gap: 2,
+    },
+    detailsText: {
+      fontFamily: FontFamily.medium,
+      fontSize: 13,
+      color: colors.accent,
+    },
+  });

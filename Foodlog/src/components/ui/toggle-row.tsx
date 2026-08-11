@@ -1,7 +1,8 @@
 import { type ReactNode } from 'react';
 import { StyleSheet, Switch, Text, View } from 'react-native';
 
-import { FontFamily, Palette, Radius, Spacing } from '@/constants/theme';
+import { FontFamily, Radius, Spacing, type ThemeColors } from '@/constants/theme';
+import { useThemedStyles } from '@/theme/use-themed-styles';
 
 type ToggleRowProps = {
   /** Leading icon element. */
@@ -17,6 +18,7 @@ type ToggleRowProps = {
  * Used for binary options like "Share to Feed".
  */
 export function ToggleRow({ icon, title, subtitle, value, onValueChange }: ToggleRowProps) {
+  const { styles, colors } = useThemedStyles(createStyles);
   return (
     <View style={styles.container}>
       <View style={styles.left}>
@@ -29,44 +31,45 @@ export function ToggleRow({ icon, title, subtitle, value, onValueChange }: Toggl
       <Switch
         value={value}
         onValueChange={onValueChange}
-        trackColor={{ false: Palette.sandMuted, true: Palette.terracotta }}
-        thumbColor={Palette.white}
-        ios_backgroundColor={Palette.sandMuted}
+        trackColor={{ false: colors.border, true: colors.accent }}
+        thumbColor={colors.white}
+        ios_backgroundColor={colors.border}
       />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: Palette.white,
-    borderRadius: Radius.md,
-    paddingVertical: Spacing.md,
-    paddingHorizontal: Spacing.lg,
-    borderWidth: 1,
-    borderColor: Palette.sandMuted,
-  },
-  left: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: Spacing.md,
-    flex: 1,
-  },
-  textBlock: {
-    flex: 1,
-  },
-  title: {
-    fontFamily: FontFamily.semiBold,
-    fontSize: 15,
-    color: Palette.ink,
-  },
-  subtitle: {
-    fontFamily: FontFamily.body,
-    fontSize: 13,
-    color: Palette.inkMuted,
-    marginTop: 1,
-  },
-});
+const createStyles = (colors: ThemeColors) =>
+  StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      backgroundColor: colors.surface,
+      borderRadius: Radius.md,
+      paddingVertical: Spacing.md,
+      paddingHorizontal: Spacing.lg,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    left: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: Spacing.md,
+      flex: 1,
+    },
+    textBlock: {
+      flex: 1,
+    },
+    title: {
+      fontFamily: FontFamily.semiBold,
+      fontSize: 15,
+      color: colors.text,
+    },
+    subtitle: {
+      fontFamily: FontFamily.body,
+      fontSize: 13,
+      color: colors.mutedText,
+      marginTop: 1,
+    },
+  });

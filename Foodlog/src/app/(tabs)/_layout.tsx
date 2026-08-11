@@ -82,13 +82,14 @@ export default function TabsLayout() {
 const styles = StyleSheet.create({
   tabBar: {
     position: 'absolute',
-    left: 16,
-    right: 16,
+    marginHorizontal: 48,
     height: 64,
     borderRadius: 32,
-    paddingHorizontal: 12,
+    paddingHorizontal: 16,
     backgroundColor: Palette.white,
     borderTopWidth: 0,
+    borderWidth: 1,
+    borderColor: Palette.sandMuted,
     // Soft floating shadow
     shadowColor: Palette.black,
     shadowOffset: { width: 0, height: 8 },
@@ -100,6 +101,9 @@ const styles = StyleSheet.create({
     height: 64,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingTop: 6,
+  },
+  createButton: {
   },
   tabLabel: {
     fontFamily: FontFamily.medium,

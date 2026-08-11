@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.lg,
   },
   side: {
-    width: 40,
+    minWidth: 40,
     justifyContent: 'center',
   },
   right: {

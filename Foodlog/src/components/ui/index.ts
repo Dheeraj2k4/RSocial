@@ -18,4 +18,6 @@ export * from './screen';
 export * from './screen-header';
 export * from './search-bar';
 export * from './section-header';
+export * from './star-rating';
 export * from './tag';
+export * from './toggle-row';

@@ -1,3 +1,5 @@
+import { Image } from 'expo-image';
+import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
 import {
   Camera,
@@ -8,6 +10,7 @@ import {
 } from 'phosphor-react-native';
 import { useState } from 'react';
 import {
+  Alert,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -48,11 +51,24 @@ export default function LogEntryScreen() {
   const [selectedVibes, setSelectedVibes] = useState<string[]>(['Aesthetic']);
   const [shareToFeed, setShareToFeed] = useState(true);
   const [notes, setNotes] = useState('');
+  const [photo, setPhoto] = useState<string | null>(null);
 
   const toggleVibe = (tag: string) => {
     setSelectedVibes((prev) =>
       prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
     );
+  };
+
+  const handleTakePhoto = async () => {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Camera access needed', 'Enable camera access to add a photo of your dish.');
+      return;
+    }
+    const result = await ImagePicker.launchCameraAsync({ quality: 0.8, allowsEditing: true });
+    if (!result.canceled) {
+      setPhoto(result.assets[0].uri);
+    }
   };
 
   const handlePublish = () => {
@@ -67,7 +83,10 @@ export default function LogEntryScreen() {
         title="New Log Entry"
         showBack
         right={
-          <Pressable onPress={handlePublish} hitSlop={8} accessibilityRole="button">
+          <Pressable
+            onPress={handlePublish}
+            accessibilityRole="button"
+            style={({ pressed }) => [styles.publishButton, pressed && styles.publishButtonPressed]}>
             <Text style={styles.publishText}>Publish</Text>
           </Pressable>
         }
@@ -82,21 +101,28 @@ export default function LogEntryScreen() {
         keyboardShouldPersistTaps="handled"
       >
         {/* ── Photo Upload ──────────────────────────────────── */}
-        <FormField label="THE MAIN DISH" badge="Required">
+        <FormField label="THE MAIN DISH" badge="Optional">
           <View style={styles.photoContainer}>
-            {/* Placeholder camera icon */}
-            <View style={styles.photoPlaceholder}>
-              <Camera size={48} color={Palette.sand} weight="thin" />
-            </View>
+            {photo ? (
+              <Image source={{ uri: photo }} style={StyleSheet.absoluteFill} contentFit="cover" />
+            ) : (
+              <View style={styles.photoPlaceholder}>
+                <Camera size={48} color={Palette.sand} weight="thin" />
+              </View>
+            )}
 
-            {/* Action buttons */}
             <View style={styles.photoActions}>
-              <Pressable style={styles.cameraButton} accessibilityLabel="Take photo">
+              <Pressable
+                style={styles.cameraButton}
+                onPress={handleTakePhoto}
+                accessibilityLabel="Take photo">
                 <Camera size={18} color={Palette.white} weight="fill" />
               </Pressable>
-              <Pressable style={styles.removePhotoButton} accessibilityLabel="Remove photo">
-                <XCircle size={28} color={Palette.terracotta} weight="fill" />
-              </Pressable>
+              {photo ? (
+                <Pressable onPress={() => setPhoto(null)} accessibilityLabel="Remove photo">
+                  <XCircle size={28} color={Palette.terracotta} weight="fill" />
+                </Pressable>
+              ) : null}
             </View>
           </View>
         </FormField>
@@ -125,7 +151,7 @@ export default function LogEntryScreen() {
         </View>
 
         {/* ── Vibe Check ────────────────────────────────────── */}
-        <FormField label="VIBE CHECK">
+        <FormField label="THE VIBE">
           <View style={styles.vibeRow}>
             {VIBE_TAGS.map((tag) => (
               <Chip
@@ -170,10 +196,19 @@ export default function LogEntryScreen() {
 
 // ── Styles ─────────────────────────────────────────────────────────────
 const styles = StyleSheet.create({
+  publishButton: {
+    backgroundColor: Palette.terracotta,
+    paddingHorizontal: Spacing.lg,
+    paddingVertical: 8,
+    borderRadius: Radius.pill,
+  },
+  publishButtonPressed: {
+    opacity: 0.85,
+  },
   publishText: {
     fontFamily: FontFamily.semiBold,
-    fontSize: 11,
-    color: Palette.terracotta,
+    fontSize: 13,
+    color: Palette.white,
   },
   divider: {
     height: 1,

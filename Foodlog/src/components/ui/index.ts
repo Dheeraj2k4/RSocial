@@ -1,6 +1,7 @@
 export * from './activity-row';
 export * from './avatar';
 export * from './avatar-stack';
+export * from './badge';
 export * from './brand-mark';
 export * from './button';
 export * from './callout-card';
@@ -18,6 +19,8 @@ export * from './screen';
 export * from './screen-header';
 export * from './search-bar';
 export * from './section-header';
+export * from './settings-row';
+export * from './settings-section';
 export * from './star-rating';
 export * from './tag';
 export * from './toggle-row';

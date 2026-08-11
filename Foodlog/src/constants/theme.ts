@@ -104,6 +104,50 @@ export const CommonStyles = StyleSheet.create({
   screenPadded: { paddingHorizontal: Spacing.xl },
 });
 
+/**
+ * Semantic color scheme consumed via `useTheme()`. Light maps to the base
+ * Palette; dark uses the deep green-black scheme. Use these for anything that
+ * must respond to dark mode.
+ */
+export type ThemeColors = {
+  primary: string;
+  background: string;
+  secondary: string;
+  text: string;
+  accent: string;
+  surface: string;
+  border: string;
+  mutedText: string;
+  white: string;
+  black: string;
+};
+
+export const LightColors: ThemeColors = {
+  primary: Palette.olive,
+  background: Palette.offWhite,
+  secondary: Palette.sand,
+  text: Palette.ink,
+  accent: Palette.terracotta,
+  surface: Palette.white,
+  border: Palette.sandMuted,
+  mutedText: Palette.inkMuted,
+  white: Palette.white,
+  black: Palette.black,
+};
+
+export const DarkColors: ThemeColors = {
+  primary: '#71805D', // light olive
+  background: '#151713', // deep green-black
+  secondary: '#302F25', // dark sand
+  text: '#F3F1E8', // warm white
+  accent: '#D97855', // light terracotta
+  surface: '#1D201B', // dark olive-gray
+  border: '#30342D',
+  mutedText: '#A7AA9E',
+  white: '#FFFFFF',
+  black: '#000000',
+};
+
 export const Fonts = Platform.select({
   ios: {
     /** iOS `UIFontDescriptorSystemDesignDefault` */

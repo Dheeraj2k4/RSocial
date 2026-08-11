@@ -1,7 +1,8 @@
 import { Image } from 'expo-image';
 import { Pressable, StyleSheet, Text } from 'react-native';
 
-import { FontFamily, Palette, Spacing } from '@/constants/theme';
+import { FontFamily, Spacing, type ThemeColors } from '@/constants/theme';
+import { useThemedStyles } from '@/theme/use-themed-styles';
 
 type CircleCardProps = {
   image: string;
@@ -12,6 +13,7 @@ type CircleCardProps = {
 
 /** Circular thumbnail with a caption — used in discovery rows. */
 export function CircleCard({ image, label, onPress, size = 92 }: CircleCardProps) {
+  const { styles } = useThemedStyles(createStyles);
   return (
     <Pressable onPress={onPress} accessibilityRole="button" style={styles.container}>
       <Image
@@ -27,22 +29,23 @@ export function CircleCard({ image, label, onPress, size = 92 }: CircleCardProps
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    width: 100,
-    alignItems: 'center',
-  },
-  image: {
-    backgroundColor: Palette.sandMuted,
-    borderWidth: 3,
-    borderColor: Palette.white,
-  },
-  label: {
-    fontFamily: FontFamily.semiBold,
-    fontSize: 12,
-    color: Palette.ink,
-    marginTop: Spacing.sm,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-});
+const createStyles = (colors: ThemeColors) =>
+  StyleSheet.create({
+    container: {
+      width: 100,
+      alignItems: 'center',
+    },
+    image: {
+      backgroundColor: colors.border,
+      borderWidth: 3,
+      borderColor: colors.background,
+    },
+    label: {
+      fontFamily: FontFamily.semiBold,
+      fontSize: 12,
+      color: colors.text,
+      marginTop: Spacing.sm,
+      textTransform: 'uppercase',
+      letterSpacing: 0.5,
+    },
+  });

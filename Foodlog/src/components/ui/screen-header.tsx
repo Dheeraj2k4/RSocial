@@ -3,7 +3,8 @@ import { useRouter } from 'expo-router';
 import { type ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { FontFamily, Palette, Spacing } from '@/constants/theme';
+import { FontFamily, Spacing, type ThemeColors } from '@/constants/theme';
+import { useThemedStyles } from '@/theme/use-themed-styles';
 
 type ScreenHeaderProps = {
   title: string;
@@ -15,6 +16,7 @@ type ScreenHeaderProps = {
 /** Consistent top bar with optional back control and a right-side slot. */
 export function ScreenHeader({ title, showBack = false, onBack, right }: ScreenHeaderProps) {
   const router = useRouter();
+  const { styles, colors } = useThemedStyles(createStyles);
   const handleBack = onBack ?? (() => router.back());
 
   return (
@@ -26,7 +28,7 @@ export function ScreenHeader({ title, showBack = false, onBack, right }: ScreenH
             hitSlop={8}
             accessibilityRole="button"
             accessibilityLabel="Go back">
-            <CaretLeft size={24} color={Palette.ink} />
+            <CaretLeft size={24} color={colors.text} />
           </Pressable>
         ) : null}
       </View>
@@ -40,25 +42,26 @@ export function ScreenHeader({ title, showBack = false, onBack, right }: ScreenH
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    height: 52,
-    paddingHorizontal: Spacing.lg,
-  },
-  side: {
-    minWidth: 40,
-    justifyContent: 'center',
-  },
-  right: {
-    alignItems: 'flex-end',
-  },
-  title: {
-    flex: 1,
-    textAlign: 'center',
-    fontFamily: FontFamily.semiBold,
-    fontSize: 18,
-    color: Palette.ink,
-  },
-});
+const createStyles = (colors: ThemeColors) =>
+  StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      height: 52,
+      paddingHorizontal: Spacing.lg,
+    },
+    side: {
+      minWidth: 40,
+      justifyContent: 'center',
+    },
+    right: {
+      alignItems: 'flex-end',
+    },
+    title: {
+      flex: 1,
+      textAlign: 'center',
+      fontFamily: FontFamily.semiBold,
+      fontSize: 18,
+      color: colors.text,
+    },
+  });

@@ -13,7 +13,8 @@ import {
   SearchBar,
   type TagTone,
 } from '@/components/ui';
-import { CommonStyles, FontFamily, Palette, Radius, Spacing } from '@/constants/theme';
+import { CommonStyles, FontFamily, Radius, Spacing, type ThemeColors } from '@/constants/theme';
+import { useThemedStyles } from '@/theme/use-themed-styles';
 
 const CATEGORIES = ['ALL', 'TRENDING', 'BRUNCH', 'JAPANESE'];
 
@@ -77,6 +78,7 @@ export default function SearchScreen() {
   const insets = useSafeAreaInsets();
   const [activeCategory, setActiveCategory] = useState('ALL');
   const [query, setQuery] = useState('');
+  const { styles, colors } = useThemedStyles(createStyles);
 
   return (
     <View style={CommonStyles.fill}>
@@ -137,7 +139,7 @@ export default function SearchScreen() {
 
       <View style={[styles.mapWrap, { bottom: insets.bottom + 90 }]}>
         <Pressable style={[CommonStyles.row, styles.mapButton]} accessibilityRole="button">
-          <MapTrifold size={18} color={Palette.ink} />
+          <MapTrifold size={18} color={colors.text} />
           <Text style={styles.mapText}>View Map</Text>
         </Pressable>
       </View>
@@ -145,61 +147,62 @@ export default function SearchScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  content: {
-    paddingTop: Spacing.md,
-    paddingBottom: 140,
-  },
-  header: {
-    marginBottom: Spacing.lg,
-  },
-  title: {
-    fontFamily: FontFamily.display,
-    fontSize: 32,
-    color: Palette.ink,
-  },
-  searchRow: {
-    marginBottom: Spacing.lg,
-  },
-  pills: {
-    paddingHorizontal: Spacing.xl,
-    gap: Spacing.sm,
-    paddingBottom: Spacing.xl,
-  },
-  section: {
-    marginBottom: Spacing.md,
-  },
-  sectionTitle: {
-    fontFamily: FontFamily.displaySemiBold,
-    fontSize: 20,
-    color: Palette.ink,
-  },
-  count: {
-    fontFamily: FontFamily.body,
-    fontSize: 13,
-    color: Palette.inkMuted,
-  },
-  list: {
-    gap: Spacing.lg,
-    marginBottom: Spacing.xl,
-  },
-  mapWrap: {
-    position: 'absolute',
-    right: Spacing.xl,
-    alignItems: 'flex-end',
-  },
-  mapButton: {
-    gap: 6,
-    backgroundColor: Palette.white,
-    paddingHorizontal: 18,
-    paddingVertical: 12,
-    borderRadius: Radius.pill,
-    borderWidth: 1,
-    borderColor: Palette.sandMuted,
-  },
-  mapText: {
-    fontFamily: FontFamily.semiBold,
-    fontSize: 14,
-    color: Palette.ink,
-  },
-});
+const createStyles = (colors: ThemeColors) =>
+  StyleSheet.create({
+    content: {
+      paddingTop: Spacing.md,
+      paddingBottom: 140,
+    },
+    header: {
+      marginBottom: Spacing.lg,
+    },
+    title: {
+      fontFamily: FontFamily.display,
+      fontSize: 32,
+      color: colors.text,
+    },
+    searchRow: {
+      marginBottom: Spacing.lg,
+    },
+    pills: {
+      paddingHorizontal: Spacing.xl,
+      gap: Spacing.sm,
+      paddingBottom: Spacing.xl,
+    },
+    section: {
+      marginBottom: Spacing.md,
+    },
+    sectionTitle: {
+      fontFamily: FontFamily.displaySemiBold,
+      fontSize: 20,
+      color: colors.text,
+    },
+    count: {
+      fontFamily: FontFamily.body,
+      fontSize: 13,
+      color: colors.mutedText,
+    },
+    list: {
+      gap: Spacing.lg,
+      marginBottom: Spacing.xl,
+    },
+    mapWrap: {
+      position: 'absolute',
+      right: Spacing.xl,
+      alignItems: 'flex-end',
+    },
+    mapButton: {
+      gap: 6,
+      backgroundColor: colors.surface,
+      paddingHorizontal: 18,
+      paddingVertical: 12,
+      borderRadius: Radius.pill,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    mapText: {
+      fontFamily: FontFamily.semiBold,
+      fontSize: 14,
+      color: colors.text,
+    },
+  });

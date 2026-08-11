@@ -1,7 +1,8 @@
 import { Star } from 'phosphor-react-native';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { Palette, Spacing } from '@/constants/theme';
+import { Spacing } from '@/constants/theme';
+import { useTheme } from '@/theme/theme-context';
 
 type StarRatingProps = {
   /** Current value (0–5). */
@@ -17,6 +18,7 @@ type StarRatingProps = {
  * Filled stars use the terracotta accent; empty stars are sand-muted outlines.
  */
 export function StarRating({ value, onChange, size = 36 }: StarRatingProps) {
+  const { colors } = useTheme();
   return (
     <View style={styles.container}>
       {[1, 2, 3, 4, 5].map((star) => {
@@ -31,7 +33,7 @@ export function StarRating({ value, onChange, size = 36 }: StarRatingProps) {
           >
             <Star
               size={size}
-              color={filled ? Palette.terracotta : Palette.sand}
+              color={filled ? colors.accent : colors.secondary}
               weight={filled ? 'fill' : 'regular'}
             />
           </Pressable>

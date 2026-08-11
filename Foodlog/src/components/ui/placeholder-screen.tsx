@@ -2,7 +2,8 @@ import { ForkKnife, type Icon } from 'phosphor-react-native';
 import { type ReactNode } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { FontFamily, Palette, Radius, Spacing } from '@/constants/theme';
+import { FontFamily, Radius, Spacing, type ThemeColors } from '@/constants/theme';
+import { useThemedStyles } from '@/theme/use-themed-styles';
 
 type PlaceholderScreenProps = {
   title: string;
@@ -18,10 +19,11 @@ export function PlaceholderScreen({
   icon: IconComponent = ForkKnife,
   children,
 }: PlaceholderScreenProps) {
+  const { styles, colors } = useThemedStyles(createStyles);
   return (
     <View style={styles.container}>
       <View style={styles.iconWrap}>
-        <IconComponent size={34} color={Palette.olive} />
+        <IconComponent size={34} color={colors.primary} />
       </View>
 
       <Text style={styles.title}>{title}</Text>
@@ -32,41 +34,42 @@ export function PlaceholderScreen({
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: Spacing.xl,
-    gap: Spacing.sm,
-  },
-  iconWrap: {
-    width: 72,
-    height: 72,
-    borderRadius: Radius.pill,
-    backgroundColor: Palette.sandMuted,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: Spacing.sm,
-  },
-  title: {
-    fontFamily: FontFamily.display,
-    fontSize: 22,
-    color: Palette.ink,
-    textAlign: 'center',
-  },
-  subtitle: {
-    fontFamily: FontFamily.body,
-    fontSize: 15,
-    lineHeight: 21,
-    color: Palette.inkMuted,
-    textAlign: 'center',
-    maxWidth: 300,
-  },
-  actions: {
-    width: '100%',
-    maxWidth: 320,
-    marginTop: Spacing.lg,
-    gap: Spacing.md,
-  },
-});
+const createStyles = (colors: ThemeColors) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: Spacing.xl,
+      gap: Spacing.sm,
+    },
+    iconWrap: {
+      width: 72,
+      height: 72,
+      borderRadius: Radius.pill,
+      backgroundColor: colors.border,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: Spacing.sm,
+    },
+    title: {
+      fontFamily: FontFamily.display,
+      fontSize: 22,
+      color: colors.text,
+      textAlign: 'center',
+    },
+    subtitle: {
+      fontFamily: FontFamily.body,
+      fontSize: 15,
+      lineHeight: 21,
+      color: colors.mutedText,
+      textAlign: 'center',
+      maxWidth: 300,
+    },
+    actions: {
+      width: '100%',
+      maxWidth: 320,
+      marginTop: Spacing.lg,
+      gap: Spacing.md,
+    },
+  });

@@ -28,7 +28,8 @@ import {
   StarRating,
   ToggleRow,
 } from '@/components/ui';
-import { FontFamily, Palette, Radius, Spacing } from '@/constants/theme';
+import { FontFamily, Radius, Spacing, type ThemeColors } from '@/constants/theme';
+import { useThemedStyles } from '@/theme/use-themed-styles';
 
 // ── Rating labels ───────────────────────────────────────────────────
 const RATING_LABELS: Record<number, string> = {
@@ -45,6 +46,7 @@ const VIBE_TAGS = ['Aesthetic', 'Date Night', 'Hidden Gem', 'Loud'];
 
 export default function LogEntryScreen() {
   const router = useRouter();
+  const { styles, colors } = useThemedStyles(createStyles);
 
   // ── State ───────────────────────────────────────────────────────
   const [rating, setRating] = useState(4);
@@ -107,7 +109,7 @@ export default function LogEntryScreen() {
               <Image source={{ uri: photo }} style={StyleSheet.absoluteFill} contentFit="cover" />
             ) : (
               <View style={styles.photoPlaceholder}>
-                <Camera size={48} color={Palette.sand} weight="thin" />
+                <Camera size={48} color={colors.secondary} weight="thin" />
               </View>
             )}
 
@@ -116,11 +118,11 @@ export default function LogEntryScreen() {
                 style={styles.cameraButton}
                 onPress={handleTakePhoto}
                 accessibilityLabel="Take photo">
-                <Camera size={18} color={Palette.white} weight="fill" />
+                <Camera size={18} color={colors.white} weight="fill" />
               </Pressable>
               {photo ? (
                 <Pressable onPress={() => setPhoto(null)} accessibilityLabel="Remove photo">
-                  <XCircle size={28} color={Palette.terracotta} weight="fill" />
+                  <XCircle size={28} color={colors.accent} weight="fill" />
                 </Pressable>
               ) : null}
             </View>
@@ -172,7 +174,7 @@ export default function LogEntryScreen() {
               placeholder={
                 'Log this meal... What made it special?\n(e.g., "The pesto was actually imported from Genoa!")'
               }
-              placeholderTextColor={Palette.inkMuted}
+              placeholderTextColor={colors.mutedText}
               multiline
               textAlignVertical="top"
               value={notes}
@@ -183,7 +185,7 @@ export default function LogEntryScreen() {
 
         {/* ── Share Toggle ──────────────────────────────────── */}
         <ToggleRow
-          icon={<ShareNetwork size={20} color={Palette.ink} weight="bold" />}
+          icon={<ShareNetwork size={20} color={colors.text} weight="bold" />}
           title="Share to Feed"
           subtitle="Visible to your followers"
           value={shareToFeed}
@@ -195,9 +197,10 @@ export default function LogEntryScreen() {
 }
 
 // ── Styles ─────────────────────────────────────────────────────────────
-const styles = StyleSheet.create({
+const createStyles = (colors: ThemeColors) =>
+  StyleSheet.create({
   publishButton: {
-    backgroundColor: Palette.terracotta,
+    backgroundColor: colors.accent,
     paddingHorizontal: Spacing.lg,
     paddingVertical: 8,
     borderRadius: Radius.pill,
@@ -208,11 +211,11 @@ const styles = StyleSheet.create({
   publishText: {
     fontFamily: FontFamily.semiBold,
     fontSize: 13,
-    color: Palette.white,
+    color: colors.white,
   },
   divider: {
     height: 1,
-    backgroundColor: Palette.sandMuted,
+    backgroundColor: colors.border,
   },
   scroll: {
     flex: 1,
@@ -227,7 +230,7 @@ const styles = StyleSheet.create({
   photoContainer: {
     height: 200,
     borderRadius: Radius.lg,
-    backgroundColor: Palette.sandMuted,
+    backgroundColor: colors.border,
     overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
@@ -248,7 +251,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: Radius.pill,
-    backgroundColor: Palette.ink,
+    backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -265,12 +268,12 @@ const styles = StyleSheet.create({
   ratingQuestion: {
     fontFamily: FontFamily.semiBold,
     fontSize: 18,
-    color: Palette.ink,
+    color: colors.text,
   },
   ratingLabel: {
     fontFamily: FontFamily.medium,
     fontSize: 15,
-    color: Palette.terracotta,
+    color: colors.accent,
     fontStyle: 'italic',
   },
 
@@ -283,7 +286,7 @@ const styles = StyleSheet.create({
 
   /* Notes */
   notesContainer: {
-    backgroundColor: Palette.sandMuted,
+    backgroundColor: colors.border,
     borderRadius: Radius.md,
     paddingHorizontal: Spacing.lg,
     paddingVertical: Spacing.lg,
@@ -292,7 +295,7 @@ const styles = StyleSheet.create({
   notesInput: {
     fontFamily: FontFamily.body,
     fontSize: 15,
-    color: Palette.ink,
+    color: colors.text,
     lineHeight: 22,
     padding: 0,
   },

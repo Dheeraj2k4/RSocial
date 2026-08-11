@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text, type PressableProps } from 'react-native';
 
-import { FontFamily, Palette, Radius, Spacing } from '@/constants/theme';
+import { FontFamily, Radius, Spacing, type ThemeColors } from '@/constants/theme';
+import { useThemedStyles } from '@/theme/use-themed-styles';
 
 type ButtonVariant = 'primary' | 'secondary';
 
@@ -11,6 +12,7 @@ type ButtonProps = Omit<PressableProps, 'children'> & {
 
 /** Primary = olive fill (main actions). Secondary = neutral outline. */
 export function Button({ title, variant = 'primary', style, disabled, ...props }: ButtonProps) {
+  const { styles } = useThemedStyles(createStyles);
   const isPrimary = variant === 'primary';
 
   return (
@@ -32,37 +34,38 @@ export function Button({ title, variant = 'primary', style, disabled, ...props }
   );
 }
 
-const styles = StyleSheet.create({
-  base: {
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 14,
-    paddingHorizontal: Spacing.xl,
-    borderRadius: Radius.pill,
-  },
-  primary: {
-    backgroundColor: Palette.olive,
-  },
-  secondary: {
-    backgroundColor: 'transparent',
-    borderWidth: 1.5,
-    borderColor: Palette.sand,
-  },
-  pressed: {
-    opacity: 0.85,
-  },
-  disabled: {
-    opacity: 0.5,
-  },
-  label: {
-    fontFamily: FontFamily.semiBold,
-    fontSize: 16,
-  },
-  labelPrimary: {
-    color: Palette.white,
-  },
-  labelSecondary: {
-    color: Palette.ink,
-  },
-});
+const createStyles = (colors: ThemeColors) =>
+  StyleSheet.create({
+    base: {
+      alignSelf: 'stretch',
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingVertical: 14,
+      paddingHorizontal: Spacing.xl,
+      borderRadius: Radius.pill,
+    },
+    primary: {
+      backgroundColor: colors.primary,
+    },
+    secondary: {
+      backgroundColor: 'transparent',
+      borderWidth: 1.5,
+      borderColor: colors.secondary,
+    },
+    pressed: {
+      opacity: 0.85,
+    },
+    disabled: {
+      opacity: 0.5,
+    },
+    label: {
+      fontFamily: FontFamily.semiBold,
+      fontSize: 16,
+    },
+    labelPrimary: {
+      color: colors.white,
+    },
+    labelSecondary: {
+      color: colors.text,
+    },
+  });

@@ -3,10 +3,11 @@ import { Gear, User } from 'phosphor-react-native';
 import { Pressable } from 'react-native';
 
 import { Button, PlaceholderScreen, Screen, ScreenHeader } from '@/components/ui';
-import { Palette } from '@/constants/theme';
+import { useTheme } from '@/theme/theme-context';
 
 export default function ProfileScreen() {
   const router = useRouter();
+  const { colors } = useTheme();
 
   return (
     <Screen>
@@ -18,7 +19,7 @@ export default function ProfileScreen() {
             hitSlop={8}
             accessibilityRole="button"
             accessibilityLabel="Open settings">
-            <Gear size={22} color={Palette.ink} />
+            <Gear size={22} color={colors.text} />
           </Pressable>
         }
       />

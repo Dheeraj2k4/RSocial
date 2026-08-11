@@ -1,7 +1,8 @@
 import { type Icon } from 'phosphor-react-native';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { Palette, Radius } from '@/constants/theme';
+import { Radius, type ThemeColors } from '@/constants/theme';
+import { useThemedStyles } from '@/theme/use-themed-styles';
 
 type IconButtonProps = {
   icon: Icon;
@@ -19,9 +20,10 @@ export function IconButton({
   accessibilityLabel,
   onPress,
   size = 24,
-  color = Palette.ink,
+  color,
   badge = false,
 }: IconButtonProps) {
+  const { styles, colors } = useThemedStyles(createStyles);
   return (
     <Pressable
       onPress={onPress}
@@ -29,28 +31,29 @@ export function IconButton({
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
       style={({ pressed }) => [styles.button, pressed && styles.pressed]}>
-      <IconComponent size={size} color={color} />
+      <IconComponent size={size} color={color ?? colors.text} />
       {badge ? <View style={styles.badge} /> : null}
     </Pressable>
   );
 }
 
-const styles = StyleSheet.create({
-  button: {
-    padding: 4,
-  },
-  pressed: {
-    opacity: 0.6,
-  },
-  badge: {
-    position: 'absolute',
-    top: 2,
-    right: 2,
-    width: 8,
-    height: 8,
-    borderRadius: Radius.pill,
-    backgroundColor: Palette.terracotta,
-    borderWidth: 1.5,
-    borderColor: Palette.offWhite,
-  },
-});
+const createStyles = (colors: ThemeColors) =>
+  StyleSheet.create({
+    button: {
+      padding: 4,
+    },
+    pressed: {
+      opacity: 0.6,
+    },
+    badge: {
+      position: 'absolute',
+      top: 2,
+      right: 2,
+      width: 8,
+      height: 8,
+      borderRadius: Radius.pill,
+      backgroundColor: colors.accent,
+      borderWidth: 1.5,
+      borderColor: colors.background,
+    },
+  });

@@ -15,7 +15,8 @@ import {
   SearchBar,
   SectionHeader,
 } from '@/components/ui';
-import { CommonStyles, FontFamily, Palette, Spacing } from '@/constants/theme';
+import { CommonStyles, FontFamily, Spacing, type ThemeColors } from '@/constants/theme';
+import { useThemedStyles } from '@/theme/use-themed-styles';
 
 // Temporary mock content until the discovery service is wired up.
 const CATEGORIES = ['all', 'trending', 'nearby', 'healthy', 'desserts', 'drinks'];
@@ -48,6 +49,7 @@ const RECENT = [
 
 export default function HomeScreen() {
   const router = useRouter();
+  const { styles, colors } = useThemedStyles(createStyles);
   const [activeCategory, setActiveCategory] = useState('all');
 
   return (
@@ -66,7 +68,7 @@ export default function HomeScreen() {
       <View style={CommonStyles.screenPadded}>
         <SearchBar
           placeholder="Search dishes, cafes, or chefs..."
-          trailing={<IconButton icon={Funnel} accessibilityLabel="Filters" size={20} color={Palette.inkMuted} />}
+          trailing={<IconButton icon={Funnel} accessibilityLabel="Filters" size={20} color={colors.mutedText} />}
         />
       </View>
 
@@ -145,45 +147,46 @@ export default function HomeScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  header: {
-    paddingHorizontal: Spacing.xl,
-    paddingTop: Spacing.sm,
-    paddingBottom: Spacing.lg,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: Palette.sandMuted,
-  },
-  greeting: {
-    gap: Spacing.md,
-  },
-  greetingLabel: {
-    fontFamily: FontFamily.body,
-    fontSize: 13,
-    color: Palette.inkMuted,
-  },
-  greetingName: {
-    fontFamily: FontFamily.semiBold,
-    fontSize: 20,
-    color: Palette.ink,
-  },
-  chips: {
-    paddingHorizontal: Spacing.xl,
-    paddingVertical: Spacing.md,
-    gap: Spacing.sm,
-  },
-  section: {
-    marginTop: Spacing.lg,
-    marginBottom: Spacing.md,
-  },
-  trending: {
-    paddingHorizontal: Spacing.xl,
-    paddingBottom: Spacing.xl,
-    gap: Spacing.lg,
-  },
-  featured: {
-    marginBottom: Spacing.lg,
-  },
-  recent: {
-    paddingBottom: 120,
-  },
-});
+const createStyles = (colors: ThemeColors) =>
+  StyleSheet.create({
+    header: {
+      paddingHorizontal: Spacing.xl,
+      paddingTop: Spacing.sm,
+      paddingBottom: Spacing.lg,
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderBottomColor: colors.border,
+    },
+    greeting: {
+      gap: Spacing.md,
+    },
+    greetingLabel: {
+      fontFamily: FontFamily.body,
+      fontSize: 13,
+      color: colors.mutedText,
+    },
+    greetingName: {
+      fontFamily: FontFamily.semiBold,
+      fontSize: 20,
+      color: colors.text,
+    },
+    chips: {
+      paddingHorizontal: Spacing.xl,
+      paddingVertical: Spacing.md,
+      gap: Spacing.sm,
+    },
+    section: {
+      marginTop: Spacing.lg,
+      marginBottom: Spacing.md,
+    },
+    trending: {
+      paddingHorizontal: Spacing.xl,
+      paddingBottom: Spacing.xl,
+      gap: Spacing.lg,
+    },
+    featured: {
+      marginBottom: Spacing.lg,
+    },
+    recent: {
+      paddingBottom: 120,
+    },
+  });

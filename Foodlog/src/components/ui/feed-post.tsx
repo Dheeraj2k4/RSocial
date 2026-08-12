@@ -166,7 +166,7 @@ const createStyles = (colors: ThemeColors) =>
       bottom: Spacing.md,
       left: Spacing.md,
       right: Spacing.md,
-      backgroundColor: colors.white,
+      backgroundColor: colors.surface,
       borderRadius: Radius.md,
       paddingHorizontal: Spacing.md,
       paddingVertical: Spacing.sm,

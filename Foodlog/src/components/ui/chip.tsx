@@ -32,7 +32,7 @@ const createStyles = (colors: ThemeColors) =>
       justifyContent: 'center',
     },
     active: {
-      backgroundColor: colors.accent,
+      backgroundColor: colors.primary,
     },
     inactive: {
       backgroundColor: 'transparent',

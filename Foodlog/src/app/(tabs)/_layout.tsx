@@ -6,6 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HapticTab } from '@/components/haptic-tab';
 import { FontFamily, type ThemeColors } from '@/constants/theme';
 import { useThemedStyles } from '@/theme/use-themed-styles';
+import { withAlpha } from '@/utils';
 
 export default function TabsLayout() {
   const router = useRouter();
@@ -16,9 +17,10 @@ export default function TabsLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
+        animation: 'fade',
         tabBarButton: HapticTab,
-        tabBarActiveTintColor: colors.accent,
-        tabBarInactiveTintColor: colors.mutedText,
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: withAlpha(colors.text, 0.65),
         tabBarLabelStyle: styles.tabLabel,
         tabBarItemStyle: styles.tabItem,
         tabBarStyle: [styles.tabBar, { bottom: Math.max(insets.bottom, 16) }],
@@ -77,6 +79,11 @@ export default function TabsLayout() {
           ),
         }}
       />
+
+      {/* Detail screens live inside the tabs so the bar stays visible, but are hidden from it. */}
+      <Tabs.Screen name="restaurant/[id]" options={{ href: null }} />
+      <Tabs.Screen name="dish/[id]" options={{ href: null }} />
+      <Tabs.Screen name="list/[id]" options={{ href: null }} />
     </Tabs>
   );
 }
@@ -111,9 +118,9 @@ const createStyles = (colors: ThemeColors) =>
       fontSize: 11,
     },
     fab: {
-      width: 52,
-      height: 52,
-      borderRadius: 26,
+      width: 56,
+      height: 56,
+      borderRadius: 28,
       backgroundColor: colors.accent,
       alignItems: 'center',
       justifyContent: 'center',

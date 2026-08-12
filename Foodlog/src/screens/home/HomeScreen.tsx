@@ -62,7 +62,12 @@ export default function HomeScreen() {
             <Text style={styles.greetingName}>Alex Rivera</Text>
           </View>
         </View>
-        <IconButton icon={Bell} accessibilityLabel="Notifications" badge />
+        <IconButton
+          icon={Bell}
+          accessibilityLabel="Notifications"
+          badge
+          onPress={() => router.push('/notifications')}
+        />
       </View>
 
       <View style={[CommonStyles.screenPadded, styles.searchRow]}>

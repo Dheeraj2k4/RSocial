@@ -1,13 +1,14 @@
 import { Image } from 'expo-image';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import {
+  ArrowLeft,
   BookmarkSimple,
   ChatCircle,
   ForkKnife,
   Heart,
   Info,
-  NavigationArrow,
-  Plus,
+  MapPin,
   ShareNetwork,
   Star,
   Wine,
@@ -102,18 +103,23 @@ export default function DishDetailScreen() {
             style={styles.heroImage}
             contentFit="cover"
           />
-          <View style={styles.heroScrim} />
+          <LinearGradient
+            colors={['transparent', colors.background, colors.background]}
+            locations={[0.2, 0.6, 1]}
+            style={StyleSheet.absoluteFill}
+            pointerEvents="none"
+          />
 
           {/* Top floating bar */}
-          <View style={[styles.heroTopBar, { paddingTop: insets.top + Spacing.sm }]}>
+          <View style={[CommonStyles.rowBetween, styles.heroTopBar, { paddingTop: insets.top + Spacing.sm }]}>
             <Pressable
               onPress={() => router.back()}
               style={styles.heroBtn}
               accessibilityLabel="Go back"
             >
-              <NavigationArrow size={20} color={Palette.white} weight="fill" />
+              <ArrowLeft size={20} color={Palette.white} weight="bold" />
             </Pressable>
-            <View style={styles.heroRight}>
+            <View style={[CommonStyles.row, styles.heroRight]}>
               <Pressable
                 style={styles.heroBtn}
                 onPress={() => setSaved((s) => !s)}
@@ -133,16 +139,17 @@ export default function DishDetailScreen() {
 
           {/* Hero info overlay */}
           <View style={styles.heroInfo}>
-            <View style={styles.heroTopRow}>
+            <View style={[CommonStyles.row, styles.heroTopRow]}>
               <Tag label={dish.trendingLabel} tone="accent" />
-              <View style={styles.ratingPill}>
-                <Star size={12} color={Palette.terracotta} weight="fill" />
+              <View style={[CommonStyles.row, styles.ratingPill]}>
+                <Star size={14} color={colors.accent} weight="fill" />
                 <Text style={styles.ratingText}>{dish.rating}</Text>
                 <Text style={styles.ratingCount}>({dish.reviews})</Text>
               </View>
             </View>
             <Text style={styles.heroName}>{dish.name}</Text>
             <View style={[CommonStyles.row, styles.heroMeta]}>
+              <MapPin size={13} color={colors.mutedText} />
               <Text style={styles.heroRestaurant}>{dish.restaurant}</Text>
               <Text style={styles.heroDot}>·</Text>
               <Text style={styles.heroLocation}>{dish.location}</Text>
@@ -159,7 +166,7 @@ export default function DishDetailScreen() {
           <Text style={styles.aboutText}>{dish.about}</Text>
 
           {/* Flavor tags */}
-          <View style={styles.tagsRow}>
+          <View style={[CommonStyles.row, styles.tagsRow]}>
             {dish.tags.map((tag) => (
               <View key={tag} style={styles.flavorTag}>
                 <Text style={styles.flavorTagText}>{tag}</Text>
@@ -169,16 +176,16 @@ export default function DishDetailScreen() {
         </View>
 
         {/* ── CTA row ─────────────────────────────────────── */}
-        <View style={[styles.ctaRow, CommonStyles.screenPadded]}>
+        <View style={[CommonStyles.row, styles.ctaRow, CommonStyles.screenPadded]}>
           <Pressable
-            style={[styles.ctaBtn, loved ? styles.ctaBtnLovedActive : styles.ctaBtnLoved]}
+            style={[CommonStyles.row, styles.ctaBtn, loved ? styles.ctaBtnLovedActive : styles.ctaBtnLoved]}
             onPress={() => setLoved((l) => !l)}
             accessibilityLabel={loved ? 'Unlove' : 'I love this'}
           >
             <Heart size={18} color={Palette.white} weight={loved ? 'fill' : 'regular'} />
             <Text style={styles.ctaBtnLovedText}>I love this</Text>
           </Pressable>
-          <Pressable style={[styles.ctaBtn, styles.ctaBtnComment]} accessibilityLabel="Comment">
+          <Pressable style={[CommonStyles.row, styles.ctaBtn, styles.ctaBtnComment]} accessibilityLabel="Comment">
             <ChatCircle size={18} color={colors.text} />
             <Text style={styles.ctaBtnCommentText}>Comment</Text>
           </Pressable>
@@ -187,7 +194,7 @@ export default function DishDetailScreen() {
         {/* ── Perfect Pairings ────────────────────────────── */}
         <View style={[styles.section, CommonStyles.screenPadded]}>
           <SectionHeader title="Perfect Pairings" actionLabel="↗" />
-          <View style={styles.pairingsGrid}>
+          <View style={[CommonStyles.row, styles.pairingsGrid]}>
             {dish.pairings.map((p) => (
               <PairingCard
                 key={p.id}
@@ -231,17 +238,6 @@ export default function DishDetailScreen() {
         <View style={{ height: insets.bottom + 100 }} />
       </ScrollView>
 
-      {/* ── Floating Log CTA ────────────────────────────── */}
-      <View style={[styles.fabWrapper, { bottom: insets.bottom + Spacing.lg }]}>
-        <Pressable
-          style={styles.fab}
-          onPress={() => router.push('/log')}
-          accessibilityLabel="Log this dish"
-        >
-          <Plus size={16} color={Palette.white} weight="bold" />
-          <Text style={styles.fabText}>LOG THIS DISH</Text>
-        </Pressable>
-      </View>
     </View>
   );
 }
@@ -250,24 +246,16 @@ export default function DishDetailScreen() {
 const createStyles = (colors: ThemeColors) =>
   StyleSheet.create({
     /* Hero */
-    heroContainer: { position: 'relative', height: 300 },
+    heroContainer: { position: 'relative', height: 380 },
     heroImage: { width: '100%', height: '100%' },
-    heroScrim: {
-      ...StyleSheet.absoluteFillObject,
-      top: '35%',
-      backgroundColor: 'rgba(18,16,12,0.65)',
-    },
     heroTopBar: {
       position: 'absolute',
       top: 0,
       left: 0,
       right: 0,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
       paddingHorizontal: Spacing.xl,
     },
-    heroRight: { flexDirection: 'row', gap: Spacing.sm },
+    heroRight: { gap: Spacing.sm },
     heroBtn: {
       width: 38,
       height: 38,
@@ -284,46 +272,38 @@ const createStyles = (colors: ThemeColors) =>
       gap: Spacing.sm,
     },
     heroTopRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
       gap: Spacing.md,
     },
     ratingPill: {
-      flexDirection: 'row',
-      alignItems: 'center',
       gap: 3,
-      backgroundColor: 'rgba(18,16,12,0.55)',
-      paddingHorizontal: Spacing.sm,
-      paddingVertical: 4,
-      borderRadius: Radius.pill,
     },
     ratingText: {
       fontFamily: FontFamily.semiBold,
-      fontSize: 13,
-      color: Palette.white,
+      fontSize: 14,
+      color: colors.text,
     },
     ratingCount: {
       fontFamily: FontFamily.body,
-      fontSize: 12,
-      color: 'rgba(255,255,255,0.75)',
+      fontSize: 13,
+      color: colors.mutedText,
     },
     heroName: {
       fontFamily: FontFamily.display,
-      fontSize: 28,
-      color: Palette.white,
-      lineHeight: 34,
+      fontSize: 30,
+      color: colors.text,
+      lineHeight: 36,
     },
     heroMeta: { gap: Spacing.xs },
     heroRestaurant: {
       fontFamily: FontFamily.medium,
-      fontSize: 13,
-      color: 'rgba(255,255,255,0.85)',
+      fontSize: 14,
+      color: colors.text,
     },
-    heroDot: { color: 'rgba(255,255,255,0.5)', fontSize: 13 },
+    heroDot: { color: colors.mutedText, fontSize: 13 },
     heroLocation: {
       fontFamily: FontFamily.body,
       fontSize: 13,
-      color: 'rgba(255,255,255,0.75)',
+      color: colors.mutedText,
     },
 
     /* About */
@@ -345,7 +325,6 @@ const createStyles = (colors: ThemeColors) =>
       lineHeight: 23,
     },
     tagsRow: {
-      flexDirection: 'row',
       flexWrap: 'wrap',
       gap: Spacing.sm,
     },
@@ -365,14 +344,11 @@ const createStyles = (colors: ThemeColors) =>
 
     /* CTA row */
     ctaRow: {
-      flexDirection: 'row',
       gap: Spacing.md,
       paddingTop: Spacing.sm,
     },
     ctaBtn: {
       flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
       justifyContent: 'center',
       gap: Spacing.sm,
       paddingVertical: 13,
@@ -397,7 +373,6 @@ const createStyles = (colors: ThemeColors) =>
 
     /* Pairings */
     pairingsGrid: {
-      flexDirection: 'row',
       gap: Spacing.md,
     },
 
@@ -427,31 +402,5 @@ const createStyles = (colors: ThemeColors) =>
       fontSize: 13,
       color: colors.mutedText,
       lineHeight: 19,
-    },
-
-    /* FAB */
-    fabWrapper: {
-      position: 'absolute',
-      alignSelf: 'center',
-    },
-    fab: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: Spacing.sm,
-      paddingHorizontal: Spacing.xl,
-      paddingVertical: 14,
-      borderRadius: Radius.pill,
-      backgroundColor: colors.accent,
-      shadowColor: colors.black,
-      shadowOffset: { width: 0, height: 6 },
-      shadowOpacity: 0.28,
-      shadowRadius: 10,
-      elevation: 8,
-    },
-    fabText: {
-      fontFamily: FontFamily.semiBold,
-      fontSize: 15,
-      color: Palette.white,
-      letterSpacing: 0.5,
     },
   });

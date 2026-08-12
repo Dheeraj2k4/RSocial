@@ -1,4 +1,5 @@
-import { UsersThree, WaveformSlash } from 'phosphor-react-native';
+import { useRouter } from 'expo-router';
+import { Bell, UsersThree } from 'phosphor-react-native';
 import { useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
@@ -78,6 +79,7 @@ const FEED_TABS = ['Following', 'Nearby', 'Trending'] as const;
 type FeedTab = (typeof FEED_TABS)[number];
 
 export default function ActivityScreen() {
+  const router = useRouter();
   const { styles } = useThemedStyles(createStyles);
   const [activeTab, setActiveTab] = useState<FeedTab>('Following');
   const [following, setFollowing] = useState<Record<string, boolean>>({});
@@ -97,7 +99,11 @@ export default function ActivityScreen() {
         right={
           <View style={[CommonStyles.row, styles.headerIcons]}>
             <IconButton icon={UsersThree} accessibilityLabel="People" />
-            <IconButton icon={WaveformSlash} accessibilityLabel="Notifications" />
+            <IconButton
+              icon={Bell}
+              accessibilityLabel="Notifications"
+              onPress={() => router.push('/notifications')}
+            />
           </View>
         }
       />
@@ -132,6 +138,7 @@ export default function ActivityScreen() {
               comments={post.comments}
               timeAgo={post.timeAgo}
               onLike={() => toggleLike(post.id)}
+              onComment={() => router.push('/comments')}
             />
             {/* Divider between posts */}
             {idx < FEED.length - 1 ? <View style={styles.divider} /> : null}

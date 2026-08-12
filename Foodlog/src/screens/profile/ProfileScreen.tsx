@@ -99,7 +99,11 @@ export default function ProfileScreen() {
       </View>
 
       <View style={[CommonStyles.screenPadded, styles.section]}>
-        <SectionHeader title="Favorite Lists" actionLabel="SEE ALL" />
+        <SectionHeader
+          title="Favorite Lists"
+          actionLabel="SEE ALL"
+          onActionPress={() => router.push('/lists')}
+        />
       </View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.lists}>
         {LISTS.map((list) => (

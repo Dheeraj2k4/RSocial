@@ -88,7 +88,7 @@ export default function SettingsScreen() {
           </SettingsSection>
 
           <SettingsSection title="PRIVACY">
-            <SettingsRow icon={Lock} label="Privacy Policy" onPress={() => {}} />
+            <SettingsRow icon={Lock} label="Privacy Policy" onPress={() => router.push('/privacy-policy')} />
             <SettingsRow icon={ShieldCheck} label="Security & Password" onPress={() => {}} />
             <SettingsRow
               icon={Moon}

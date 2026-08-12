@@ -15,8 +15,8 @@ export default function WelcomeScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
-  const handleGetStarted = () => router.replace('/(tabs)/home');
-  const handleLogin = () => router.replace('/(tabs)/home');
+  const handleGetStarted = () => router.push('/auth');
+  const handleLogin = () => router.push('/auth');
 
   return (
     <View style={styles.container}>

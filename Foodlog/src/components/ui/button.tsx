@@ -45,7 +45,7 @@ const createStyles = (colors: ThemeColors) =>
       borderRadius: Radius.pill,
     },
     primary: {
-      backgroundColor: colors.primary,
+      backgroundColor: colors.accent,
     },
     secondary: {
       backgroundColor: 'transparent',

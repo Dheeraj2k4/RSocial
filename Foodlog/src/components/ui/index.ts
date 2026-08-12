@@ -11,6 +11,7 @@ export * from './creator-card';
 export * from './dish-card';
 export * from './featured-restaurant-card';
 export * from './feed-post';
+export * from './follow-button';
 export * from './form-field';
 export * from './icon-button';
 export * from './input-field';

@@ -1,15 +1,14 @@
 import { Image } from 'expo-image';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import {
-  BookmarkSimple,
-  CalendarBlank,
+  ArrowLeft,
   Clock,
+  Export,
+  Heart,
   MapPin,
   NavigationArrow,
-  PencilLine,
   Phone,
-  Plus,
-  ShareNetwork,
   Star,
 } from 'phosphor-react-native';
 import { useState } from 'react';
@@ -116,32 +115,33 @@ export default function RestaurantDetailScreen() {
             contentFit="cover"
           />
 
-          {/* Gradient scrim at bottom of image */}
-          <View style={styles.heroScrim} />
+          {/* White gradient fading the image into the page background */}
+          <LinearGradient
+            colors={['transparent', colors.background, colors.background]}
+            locations={[0.2, 0.62, 1]}
+            style={StyleSheet.absoluteFill}
+            pointerEvents="none"
+          />
 
           {/* Floating action bar (top) */}
-          <View style={[styles.heroTopBar, { paddingTop: insets.top + Spacing.sm }]}>
+          <View style={[CommonStyles.rowBetween, styles.heroTopBar, { paddingTop: insets.top + Spacing.sm }]}>
             <Pressable
               onPress={() => router.back()}
               style={styles.heroBtn}
               accessibilityLabel="Go back"
             >
-              <NavigationArrow size={20} color={Palette.white} weight="fill" />
+              <ArrowLeft size={20} color={Palette.white} weight="bold" />
             </Pressable>
-            <View style={styles.heroRight}>
+            <View style={[CommonStyles.row, styles.heroRight]}>
               <Pressable style={styles.heroBtn} accessibilityLabel="Share">
-                <ShareNetwork size={20} color={Palette.white} />
+                <Export size={20} color={Palette.white} />
               </Pressable>
               <Pressable
                 style={styles.heroBtn}
                 onPress={() => setSaved((s) => !s)}
-                accessibilityLabel={saved ? 'Unsave' : 'Save'}
+                accessibilityLabel={saved ? 'Unlike' : 'Like'}
               >
-                <BookmarkSimple
-                  size={20}
-                  color={Palette.white}
-                  weight={saved ? 'fill' : 'regular'}
-                />
+                <Heart size={20} color={Palette.white} weight={saved ? 'fill' : 'regular'} />
               </Pressable>
             </View>
           </View>
@@ -151,10 +151,9 @@ export default function RestaurantDetailScreen() {
             <Tag label="TRENDING #1" tone="accent" />
             <Text style={styles.heroName}>{restaurant.name}</Text>
             <View style={[CommonStyles.row, styles.heroMeta]}>
-              <Star size={14} color={Palette.terracotta} weight="fill" />
-              <Text style={styles.heroRating}>
-                {restaurant.rating} ({restaurant.reviews} reviews)
-              </Text>
+              <Star size={16} color={colors.accent} weight="fill" />
+              <Text style={styles.heroRating}>{restaurant.rating}</Text>
+              <Text style={styles.heroReviews}>({restaurant.reviews} reviews)</Text>
               <Text style={styles.heroDot}>·</Text>
               <Text style={styles.heroCategory}>{restaurant.category}</Text>
               <Text style={styles.heroDot}>·</Text>
@@ -164,17 +163,17 @@ export default function RestaurantDetailScreen() {
         </View>
 
         {/* ── CTA Buttons ────────────────────────────────── */}
-        <View style={[styles.ctaRow, CommonStyles.screenPadded]}>
+        <View style={[CommonStyles.row, styles.ctaRow, CommonStyles.screenPadded]}>
           <Pressable
-            style={[styles.ctaBtn, styles.ctaBtnPrimary]}
+            style={[CommonStyles.row, styles.ctaBtn, styles.ctaBtnPrimary]}
             onPress={() => router.push('/log')}
             accessibilityLabel="Book Table"
           >
-            <CalendarBlank size={16} color={Palette.white} weight="bold" />
+            <Clock size={16} color={Palette.white} weight="bold" />
             <Text style={styles.ctaBtnPrimaryText}>Book Table</Text>
           </Pressable>
           <Pressable
-            style={[styles.ctaBtn, styles.ctaBtnSecondary]}
+            style={[CommonStyles.row, styles.ctaBtn, styles.ctaBtnSecondary]}
             accessibilityLabel="Directions"
           >
             <MapPin size={16} color={colors.text} weight="bold" />
@@ -183,14 +182,14 @@ export default function RestaurantDetailScreen() {
         </View>
 
         {/* ── Info tiles ─────────────────────────────────── */}
-        <View style={[styles.infoRow, CommonStyles.screenPadded]}>
+        <View style={[CommonStyles.row, styles.infoRow, CommonStyles.screenPadded]}>
           <View style={styles.infoTile}>
-            <Clock size={18} color={colors.primary} />
+            <Clock size={18} color={colors.accent} />
             <Text style={styles.infoLabel}>STATUS</Text>
             <Text style={styles.infoValueGreen}>{restaurant.status}</Text>
           </View>
-          <View style={[styles.infoTile, styles.infoTileRight]}>
-            <Phone size={18} color={colors.primary} />
+          <View style={styles.infoTile}>
+            <Phone size={18} color={colors.accent} />
             <Text style={styles.infoLabel}>CONTACT</Text>
             <Text style={styles.infoValue}>{restaurant.phone}</Text>
           </View>
@@ -199,7 +198,7 @@ export default function RestaurantDetailScreen() {
         {/* ── Atmosphere ─────────────────────────────────── */}
         <View style={[styles.section, CommonStyles.screenPadded]}>
           <SectionHeader title="Atmosphere" actionLabel="VIEW ALL" />
-          <View style={styles.atmosphereGrid}>
+          <View style={[CommonStyles.row, styles.atmosphereGrid]}>
             {restaurant.atmosphere.map((uri, idx) => (
               <Image
                 key={idx}
@@ -214,7 +213,7 @@ export default function RestaurantDetailScreen() {
         {/* ── Signature Dishes ───────────────────────────── */}
         <View style={[styles.section, CommonStyles.screenPadded]}>
           <SectionHeader title="Signature Dishes" actionLabel="MENU" />
-          <View style={styles.dishGrid}>
+          <View style={[CommonStyles.row, styles.dishGrid]}>
             {restaurant.dishes.map((dish) => (
               <DishCard
                 key={dish.id}
@@ -245,7 +244,7 @@ export default function RestaurantDetailScreen() {
           </View>
 
           {/* View all reviews */}
-          <Pressable style={styles.viewAllRow} accessibilityLabel="View all reviews">
+          <Pressable style={[CommonStyles.row, styles.viewAllRow]} accessibilityLabel="View all reviews">
             <Text style={styles.viewAllText}>
               View all {restaurant.reviews} reviews
             </Text>
@@ -256,17 +255,6 @@ export default function RestaurantDetailScreen() {
         <View style={{ height: insets.bottom + 100 }} />
       </ScrollView>
 
-      {/* ── Floating Log CTA ───────────────────────────── */}
-      <View style={[styles.fabWrapper, { bottom: insets.bottom + Spacing.xl }]}>
-        <Pressable
-          style={styles.fab}
-          onPress={() => router.push('/log')}
-          accessibilityLabel="Log this visit"
-        >
-          <PencilLine size={18} color={Palette.white} weight="bold" />
-          <Plus size={14} color={Palette.white} weight="bold" />
-        </Pressable>
-      </View>
     </View>
   );
 }
@@ -275,26 +263,16 @@ export default function RestaurantDetailScreen() {
 const createStyles = (colors: ThemeColors) =>
   StyleSheet.create({
     /* Hero */
-    heroContainer: { position: 'relative', height: 320 },
+    heroContainer: { position: 'relative', height: 420 },
     heroImage: { width: '100%', height: '100%' },
-    heroScrim: {
-      ...StyleSheet.absoluteFillObject,
-      background: 'transparent',
-      // Gradient emulated via a semi-transparent layer at the bottom
-      top: '40%',
-      backgroundColor: 'rgba(20,18,14,0.62)',
-    },
     heroTopBar: {
       position: 'absolute',
       top: 0,
       left: 0,
       right: 0,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
       paddingHorizontal: Spacing.xl,
     },
-    heroRight: { flexDirection: 'row', gap: Spacing.sm },
+    heroRight: { gap: Spacing.sm },
     heroBtn: {
       width: 38,
       height: 38,
@@ -312,27 +290,25 @@ const createStyles = (colors: ThemeColors) =>
     },
     heroName: {
       fontFamily: FontFamily.display,
-      fontSize: 28,
-      color: Palette.white,
-      lineHeight: 34,
+      fontSize: 32,
+      color: colors.text,
+      lineHeight: 38,
     },
     heroMeta: { gap: Spacing.xs, flexWrap: 'wrap' },
-    heroRating: { fontFamily: FontFamily.medium, fontSize: 13, color: Palette.white },
-    heroDot: { color: 'rgba(255,255,255,0.5)', fontSize: 13 },
-    heroCategory: { fontFamily: FontFamily.medium, fontSize: 13, color: Palette.offWhite },
-    heroPrice: { fontFamily: FontFamily.semiBold, fontSize: 13, color: Palette.white },
+    heroRating: { fontFamily: FontFamily.semiBold, fontSize: 15, color: colors.text },
+    heroReviews: { fontFamily: FontFamily.body, fontSize: 14, color: colors.mutedText },
+    heroDot: { color: colors.mutedText, fontSize: 13 },
+    heroCategory: { fontFamily: FontFamily.medium, fontSize: 14, color: colors.mutedText },
+    heroPrice: { fontFamily: FontFamily.semiBold, fontSize: 14, color: colors.mutedText },
 
     /* CTA row */
     ctaRow: {
-      flexDirection: 'row',
       gap: Spacing.md,
       paddingTop: Spacing.xl,
       paddingBottom: Spacing.md,
     },
     ctaBtn: {
       flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
       justifyContent: 'center',
       gap: Spacing.sm,
       paddingVertical: 14,
@@ -357,7 +333,6 @@ const createStyles = (colors: ThemeColors) =>
 
     /* Info tiles */
     infoRow: {
-      flexDirection: 'row',
       gap: Spacing.md,
       marginBottom: Spacing.lg,
     },
@@ -370,7 +345,6 @@ const createStyles = (colors: ThemeColors) =>
       borderWidth: StyleSheet.hairlineWidth,
       borderColor: colors.border,
     },
-    infoTileRight: {},
     infoLabel: {
       fontFamily: FontFamily.semiBold,
       fontSize: 10,
@@ -395,7 +369,6 @@ const createStyles = (colors: ThemeColors) =>
 
     /* Atmosphere */
     atmosphereGrid: {
-      flexDirection: 'row',
       gap: Spacing.md,
     },
     atmosphereImage: {
@@ -407,15 +380,12 @@ const createStyles = (colors: ThemeColors) =>
 
     /* Dish grid */
     dishGrid: {
-      flexDirection: 'row',
       gap: Spacing.md,
     },
 
     /* Reviews */
     reviewList: { gap: Spacing.md },
     viewAllRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
       justifyContent: 'center',
       gap: Spacing.xs,
       paddingTop: Spacing.sm,
@@ -424,26 +394,5 @@ const createStyles = (colors: ThemeColors) =>
       fontFamily: FontFamily.medium,
       fontSize: 14,
       color: colors.accent,
-    },
-
-    /* Floating log button */
-    fabWrapper: {
-      position: 'absolute',
-      alignSelf: 'center',
-    },
-    fab: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: 2,
-      width: 52,
-      height: 52,
-      borderRadius: Radius.pill,
-      backgroundColor: colors.accent,
-      shadowColor: colors.black,
-      shadowOffset: { width: 0, height: 6 },
-      shadowOpacity: 0.25,
-      shadowRadius: 10,
-      elevation: 8,
     },
   });

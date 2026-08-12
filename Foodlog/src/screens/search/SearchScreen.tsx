@@ -1,8 +1,7 @@
 import { useRouter } from 'expo-router';
-import { BookmarkSimple, MapTrifold } from 'phosphor-react-native';
-import { useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { BookmarkSimple } from 'phosphor-react-native';
+import { useMemo, useState } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import {
   CalloutCard,
@@ -13,7 +12,7 @@ import {
   SearchBar,
   type TagTone,
 } from '@/components/ui';
-import { CommonStyles, FontFamily, Radius, Spacing, type ThemeColors } from '@/constants/theme';
+import { CommonStyles, FontFamily, Spacing, type ThemeColors } from '@/constants/theme';
 import { useThemedStyles } from '@/theme/use-themed-styles';
 
 const CATEGORIES = ['ALL', 'TRENDING', 'BRUNCH', 'JAPANESE'];
@@ -75,14 +74,31 @@ const RESTAURANTS: Restaurant[] = [
 
 export default function SearchScreen() {
   const router = useRouter();
-  const insets = useSafeAreaInsets();
   const [activeCategory, setActiveCategory] = useState('ALL');
   const [query, setQuery] = useState('');
-  const { styles, colors } = useThemedStyles(createStyles);
+  const [spinOrder, setSpinOrder] = useState<string[] | null>(null);
+  const { styles } = useThemedStyles(createStyles);
+
+  const results = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    const matches = RESTAURANTS.filter((r) => {
+      const matchesQuery =
+        !q || r.name.toLowerCase().includes(q) || r.cuisine.toLowerCase().includes(q);
+      const matchesCategory =
+        activeCategory === 'ALL' ||
+        r.cuisine.toUpperCase().includes(activeCategory) ||
+        r.tags.some((t) => t.label.toUpperCase() === activeCategory);
+      return matchesQuery && matchesCategory;
+    });
+    if (!spinOrder) return matches;
+    return [...matches].sort((a, b) => spinOrder.indexOf(a.id) - spinOrder.indexOf(b.id));
+  }, [query, activeCategory, spinOrder]);
+
+  // "Spin" reshuffles the recommendations for a fresh pick.
+  const spin = () => setSpinOrder(RESTAURANTS.map((r) => r.id).sort(() => Math.random() - 0.5));
 
   return (
-    <View style={CommonStyles.fill}>
-      <Screen scroll contentContainerStyle={styles.content}>
+    <Screen scroll contentContainerStyle={styles.content}>
         <View style={[CommonStyles.rowBetween, CommonStyles.screenPadded, styles.header]}>
           <Text style={styles.title}>Discover</Text>
           <IconButton icon={BookmarkSimple} accessibilityLabel="Saved places" />
@@ -109,23 +125,27 @@ export default function SearchScreen() {
 
         <View style={[CommonStyles.rowBetween, CommonStyles.screenPadded, styles.section]}>
           <Text style={styles.sectionTitle}>Recommended for You</Text>
-          <Text style={styles.count}>{RESTAURANTS.length} results</Text>
+          <Text style={styles.count}>{results.length} results</Text>
         </View>
 
         <View style={[CommonStyles.screenPadded, styles.list]}>
-          {RESTAURANTS.map((item) => (
-            <RestaurantListCard
-              key={item.id}
-              image={item.image}
-              name={item.name}
-              rating={item.rating}
-              cuisine={item.cuisine}
-              distance={item.distance}
-              time={item.time}
-              tags={item.tags}
-              onPress={() => router.push('/restaurant/r1')}
-            />
-          ))}
+          {results.length === 0 ? (
+            <Text style={styles.empty}>No spots match your search yet. Try another vibe.</Text>
+          ) : (
+            results.map((item) => (
+              <RestaurantListCard
+                key={item.id}
+                image={item.image}
+                name={item.name}
+                rating={item.rating}
+                cuisine={item.cuisine}
+                distance={item.distance}
+                time={item.time}
+                tags={item.tags}
+                onPress={() => router.push('/restaurant/r1')}
+              />
+            ))
+          )}
         </View>
 
         <View style={CommonStyles.screenPadded}>
@@ -133,17 +153,10 @@ export default function SearchScreen() {
             title="Can't decide?"
             subtitle="Let us curate a personalized list of trending spots near your current location."
             buttonLabel="Spin the Foodlog"
+            onPress={spin}
           />
         </View>
       </Screen>
-
-      <View style={[styles.mapWrap, { bottom: insets.bottom + 90 }]}>
-        <Pressable style={[CommonStyles.row, styles.mapButton]} accessibilityRole="button">
-          <MapTrifold size={18} color={colors.text} />
-          <Text style={styles.mapText}>View Map</Text>
-        </Pressable>
-      </View>
-    </View>
   );
 }
 
@@ -186,23 +199,11 @@ const createStyles = (colors: ThemeColors) =>
       gap: Spacing.lg,
       marginBottom: Spacing.xl,
     },
-    mapWrap: {
-      position: 'absolute',
-      right: Spacing.xl,
-      alignItems: 'flex-end',
-    },
-    mapButton: {
-      gap: 6,
-      backgroundColor: colors.surface,
-      paddingHorizontal: 18,
-      paddingVertical: 12,
-      borderRadius: Radius.pill,
-      borderWidth: 1,
-      borderColor: colors.border,
-    },
-    mapText: {
-      fontFamily: FontFamily.semiBold,
+    empty: {
+      fontFamily: FontFamily.body,
       fontSize: 14,
-      color: colors.text,
+      color: colors.mutedText,
+      paddingVertical: Spacing.xl,
+      textAlign: 'center',
     },
   });

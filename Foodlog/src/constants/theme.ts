@@ -3,7 +3,7 @@
  * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
  */
 
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 /**
  * Foodlog brand palette. Use these tokens instead of raw hex values.
@@ -25,40 +25,6 @@ export const Palette = {
   overlay: 'rgba(20, 22, 17, 0.45)', // scrim over photography
 } as const;
 
-const tintColorLight = Palette.olive;
-const tintColorDark = Palette.offWhite;
-
-export const Colors = {
-  light: {
-    text: Palette.ink,
-    textSecondary: Palette.inkMuted,
-    background: Palette.offWhite,
-    surface: Palette.white,
-    tint: tintColorLight,
-    primary: Palette.olive,
-    secondary: Palette.sand,
-    accent: Palette.terracotta,
-    border: Palette.sandMuted,
-    icon: Palette.inkMuted,
-    tabIconDefault: Palette.inkMuted,
-    tabIconSelected: tintColorLight,
-  },
-  dark: {
-    text: '#ECEBE3',
-    textSecondary: '#A9AC9E',
-    background: '#161811',
-    surface: '#20231D',
-    tint: tintColorDark,
-    primary: '#8A9673',
-    secondary: '#3A3D31',
-    accent: Palette.terracotta,
-    border: '#2C2F26',
-    icon: '#A9AC9E',
-    tabIconDefault: '#A9AC9E',
-    tabIconSelected: tintColorDark,
-  },
-};
-
 /** Spacing scale (4pt base) for consistent layout rhythm. */
 export const Spacing = {
   xs: 4,
@@ -79,14 +45,14 @@ export const Radius = {
 } as const;
 
 /**
- * Typography families.
- * Playfair Display → editorial display headings and major section titles.
+ * Typography families — modern geometric sans per brand guidelines.
+ * Montserrat → bold display headings and section titles.
  * Inter → body copy, navigation, buttons, labels and metadata.
  * Values match the @expo-google-fonts export keys (loaded in the root layout).
  */
 export const FontFamily = {
-  display: 'PlayfairDisplay_700Bold',
-  displaySemiBold: 'PlayfairDisplay_600SemiBold',
+  display: 'Montserrat_700Bold',
+  displaySemiBold: 'Montserrat_600SemiBold',
   body: 'Inter_400Regular',
   medium: 'Inter_500Medium',
   semiBold: 'Inter_600SemiBold',
@@ -147,28 +113,3 @@ export const DarkColors: ThemeColors = {
   white: '#FFFFFF',
   black: '#000000',
 };
-
-export const Fonts = Platform.select({
-  ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-    mono: 'ui-monospace',
-  },
-  default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
-  },
-  web: {
-    sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-    serif: "Georgia, 'Times New Roman', serif",
-    rounded: "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
-    mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
-  },
-});

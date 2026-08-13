@@ -54,13 +54,14 @@ export interface Follow {
 
 export interface Like {
   userId: ID;
-  activityId: ID;
+  reviewId: ID;
+  createdAt: string;
 }
 
 export interface Comment {
   id: ID;
   userId: ID;
-  activityId: ID;
+  reviewId: ID;
   text: string;
   createdAt: string;
 }
@@ -89,7 +90,12 @@ export interface Save {
   targetId: ID;
 }
 
-export type ActivityType = 'rated' | 'visited' | 'reviewed' | 'list_added' | 'list_created';
+export type ActivityType =
+  | 'review_created'
+  | 'restaurant_visited'
+  | 'restaurant_saved'
+  | 'list_created'
+  | 'restaurant_added_to_list';
 
 export interface Activity {
   id: ID;
@@ -98,5 +104,23 @@ export interface Activity {
   restaurantId?: ID;
   reviewId?: ID;
   listId?: ID;
+  createdAt: string;
+}
+
+export type NotificationType =
+  | 'follow'
+  | 'like'
+  | 'comment'
+  | 'list_follow'
+  | 'restaurant_added_to_list';
+
+export interface Notification {
+  id: ID;
+  recipientId: ID;
+  actorId: ID;
+  type: NotificationType;
+  reviewId?: ID;
+  listId?: ID;
+  read: boolean;
   createdAt: string;
 }

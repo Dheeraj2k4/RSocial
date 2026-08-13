@@ -21,6 +21,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Avatar, Badge, SettingsRow, SettingsSection } from '@/components/ui';
 import { CommonStyles, FontFamily, Radius, Spacing } from '@/constants/theme';
+import { useAuth } from '@/hooks/use-auth';
 import { useTheme } from '@/theme/theme-context';
 
 const AVATAR = 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80';
@@ -28,6 +29,7 @@ const AVATAR = 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=f
 export default function SettingsScreen() {
   const router = useRouter();
   const { colors, isDark, toggleMode } = useTheme();
+  const { signOut } = useAuth();
 
   const [pushNotifications, setPushNotifications] = useState(true);
   const [emailNewsletter, setEmailNewsletter] = useState(false);
@@ -105,7 +107,10 @@ export default function SettingsScreen() {
 
           <Pressable
             style={[CommonStyles.center, styles.logout]}
-            onPress={() => router.replace('/')}
+            onPress={async () => {
+              await signOut();
+              router.replace('/');
+            }}
             accessibilityRole="button">
             <View style={CommonStyles.row}>
               <SignOut size={20} color={colors.accent} />
